@@ -1,15 +1,17 @@
-#!/bin/bash
+!/bin/bash
 
 # Funció per crear un usuari
 crear_usuari() {
     read -p "Introdueix el nom d'usuari: " usuari
     sudo adduser --allow-bad-names $usuari
+read
 }
 
 # Funció per crear un grup
 crear_grup() {
     read -p "Introdueix el nom del grup: " grup
     sudo groupadd $grup
+read
 }
 
 # Funció per canviar el grup principal d'un usuari
@@ -17,6 +19,7 @@ canviar_grup_principal() {
     read -p "Introdueix el nom d'usuari: " usuari
     read -p "Introdueix el nou grup principal: " grup
     sudo usermod -g $grup $usuari
+read
 }
 
 # Funció per afegir un usuari a un grup
@@ -24,6 +27,7 @@ afegir_usuari_grup() {
     read -p "Introdueix el nom d'usuari: " usuari
     read -p "Introdueix el nom del grup: " grup
     sudo usermod -aG $grup $usuari
+read
 }
 
 # Funció per canviar els permisos d'un fitxer o directori
@@ -31,6 +35,7 @@ canviar_permisos() {
     read -p "Introdueix el camí del fitxer o directori: " fitxer
     read -p "Introdueix els permisos (per exemple, 755): " permisos
     sudo chmod $permisos $fitxer
+read
 }
 
 # Funció per canviar el propietari d'un fitxer o directori
@@ -38,6 +43,7 @@ canviar_propietari() {
     read -p "Introdueix el camí del fitxer o directori: " fitxer
     read -p "Introdueix el nou propietari: " usuari
     sudo chown $usuari $fitxer
+read
 }
 
 # Funció per canviar el grup propietari d'un fitxer o directori
@@ -45,6 +51,7 @@ canviar_grup_propietari() {
     read -p "Introdueix el camí del fitxer o directori: " fitxer
     read -p "Introdueix el nou grup propietari: " grup
     sudo chown :$grup $fitxer
+read
 }
 
 # Funció per crear estructura a partir d'un fitxer de configuració
@@ -54,7 +61,7 @@ crear_estructura() {
         echo "El fitxer de configuració no existeix."
         return
     fi
-
+read
     # Llegir el fitxer de configuració
     grup_principal=""
     grups_secundaris=()
@@ -72,13 +79,13 @@ crear_estructura() {
             usuaris_grups[$usuari]=$grups
         fi
     done < $config_file
-
+read
     # Crear grup principal
     sudo groupadd $grup_principal
     sudo mkdir -p /home/$grup_principal
     sudo chmod 770 /home/$grup_principal
     sudo chgrp $grup_principal /home/$grup_principal
-
+read
     # Crear grups secundaris i carpetes corresponents
     for grup in "${grups_secundaris[@]}"; do
         sudo groupadd $grup
@@ -86,7 +93,7 @@ crear_estructura() {
         sudo chmod 770 /home/$grup_principal/$grup
         sudo chgrp $grup /home/$grup_principal/$grup
     done
-
+read
     # Crear usuaris i afegir-los als grups
     for usuari in "${!usuaris_grups[@]}"; do
         sudo adduser --home /home/$usuari --ingroup $grup_principal --disabled-password --gecos "" --allow-bad-names $usuari
@@ -94,10 +101,9 @@ crear_estructura() {
             sudo usermod -aG $grup $usuari
         done
     done
-
     echo "Estructura creada correctament a partir del fitxer de configuració."
 }
-
+read
 # Menú principal
 while true; do
 clear
