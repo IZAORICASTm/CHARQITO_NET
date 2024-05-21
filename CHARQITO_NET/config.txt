@@ -1,0 +1,13 @@
+GP: iestacio
+
+GS: 1SMXM, 2SMXM, 1DAW, 2DAW, 1ESOA
+
+Usuaris:
+
+jordi: 1SMXM
+
+toni: 2SMXM
+
+elena: 1DAW, 2DAW
+
+ana: 1ESOA
