@@ -1,0 +1,4 @@
+err: Please enter a username matching the regular expression
+            configured via the NAME_REGEX configuration variable.  Use the
+            `--allow-bad-names' option to relax this check or reconfigure
+            NAME_REGEX in configuration.
