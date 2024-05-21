@@ -3,7 +3,7 @@
 # Funció per crear un usuari
 crear_usuari() {
     read -p "Introdueix el nom d'usuari: " usuari
-    sudo adduser $usuari
+    sudo adduser --allow-bad-names $usuari
 }
 
 # Funció per crear un grup
@@ -89,7 +89,7 @@ crear_estructura() {
 
     # Crear usuaris i afegir-los als grups
     for usuari in "${!usuaris_grups[@]}"; do
-        sudo adduser --home /home/$usuari --ingroup $grup_principal --disabled-password --gecos "" $usuari
+        sudo adduser --home /home/$usuari --ingroup $grup_principal --disabled-password --gecos "" --allow-bad-names $usuari
         for grup in ${usuaris_grups[$usuari]}; do
             sudo usermod -aG $grup $usuari
         done
