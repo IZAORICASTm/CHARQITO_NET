@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # Funció per crear un usuari
 crear_usuari() {
