@@ -1,95 +1,127 @@
-#!bin/bash
-while true
-do
-    clear
-    echo modo de usuarios
-    echo
-    sleep 1
-    echo este  es el modo de usuarios
-    sleep 3
-    echo
-    echo
-    echo estas son las opciones:::
-    sleep 1
-    echo 1. crear usuarios
-    echo
-    echo 2. cambiar contraseñas
-    echo
-    echo 3. modificar caracteristicas de cuentas
-    echo
-    echo 4. borrar usuarios
-    echo
-    echo 5. crear grupos nuevos
-    echo
-    echo 6. borrar grupos
-    echo
-    echo 7. cambia el usuario y/o grupo propietario de ficheros
-    echo
-    echo 8. modificar permisos de ficheros
-    echo
-    echo 9. salir
-    echo
-    echo
-    sleep 2
-    echo
-    echo -n Selecciona una opcion:_
-    read opm
-    case $opm in
-    1)
-    clear
-        echo -n escribe el nombre del usuario:
-            read usu
-            echo creando usuario
-            sleep 1.23
-            echo .
+#!/bin/bash
 
-            echo .
+# Funció per crear un usuari
+crear_usuari() {
+    read -p "Introdueix el nom d'usuari: " usuari
+    sudo adduser $usuari
+}
 
-            echo .
+# Funció per crear un grup
+crear_grup() {
+    read -p "Introdueix el nom del grup: " grup
+    sudo groupadd $grup
+}
 
-        #useradd $usu
-        echo -n usuario $usu creado
+# Funció per canviar el grup principal d'un usuari
+canviar_grup_principal() {
+    read -p "Introdueix el nom d'usuari: " usuari
+    read -p "Introdueix el nou grup principal: " grup
+    sudo usermod -g $grup $usuari
+}
 
-        sleep 2
-        ;;
-    2)
-    clear
-        echo -n escribe la nueva contraseña:
-        read pas
-        clear
-        echo -n vuelve a escribir la nueva contraseña::
-        read pas
-        echo cambiando contraseña
-        sleep 1.23
-        echo .
-        sleep 1.45
-        echo .
-        sleep 1.67
-        echo .
-        sleep 1.89
-        #passwd $pas
-        echo contraseña cambiada
-        sleep 2
-        ;;
-    3)
-        usermod
-        ;;
-    4)
-        userdel
-        ;;
-    5)
-        groupadd
-        ;;
-    6)
-        groupdel
-        ;;
-    7)
-        chown
-        ;;
-    8)
-        chmod
-        ;;
-    9)
-        echo saliendo
+# Funció per afegir un usuari a un grup
+afegir_usuari_grup() {
+    read -p "Introdueix el nom d'usuari: " usuari
+    read -p "Introdueix el nom del grup: " grup
+    sudo usermod -aG $grup $usuari
+}
+
+# Funció per canviar els permisos d'un fitxer o directori
+canviar_permisos() {
+    read -p "Introdueix el camí del fitxer o directori: " fitxer
+    read -p "Introdueix els permisos (per exemple, 755): " permisos
+    sudo chmod $permisos $fitxer
+}
+
+# Funció per canviar el propietari d'un fitxer o directori
+canviar_propietari() {
+    read -p "Introdueix el camí del fitxer o directori: " fitxer
+    read -p "Introdueix el nou propietari: " usuari
+    sudo chown $usuari $fitxer
+}
+
+# Funció per canviar el grup propietari d'un fitxer o directori
+canviar_grup_propietari() {
+    read -p "Introdueix el camí del fitxer o directori: " fitxer
+    read -p "Introdueix el nou grup propietari: " grup
+    sudo chown :$grup $fitxer
+}
+
+# Funció per crear estructura a partir d'un fitxer de configuració
+crear_estructura() {
+    read -p "Introdueix el camí del fitxer de configuració: " config_file
+    if [ ! -f $config_file ]; then
+        echo "El fitxer de configuració no existeix."
+        return
+    fi
+
+    # Llegir el fitxer de configuració
+    grup_principal=""
+    grups_secundaris=()
+    declare -A usuaris_grups
+
+    while IFS= read -r line
+    do
+        if [[ $line == GP:* ]]; then
+            grup_principal=$(echo $line | cut -d':' -f2 | tr -d ' ')
+        elif [[ $line == GS:* ]]; then
+            IFS=',' read -r -a grups_secundaris <<< $(echo $line | cut -d':' -f2 | tr -d ' ')
+        elif [[ $line == *:* ]]; then
+            usuari=$(echo $line | cut -d':' -f1 | tr -d ' ')
+            grups=$(echo $line | cut -d':' -f2 | tr -d ' ' | tr ',' ' ')
+            usuaris_grups[$usuari]=$grups
+        fi
+    done < $config_file
+
+    # Crear grup principal
+    sudo groupadd $grup_principal
+    sudo mkdir -p /home/$grup_principal
+    sudo chmod 770 /home/$grup_principal
+    sudo chgrp $grup_principal /home/$grup_principal
+
+    # Crear grups secundaris i carpetes corresponents
+    for grup in "${grups_secundaris[@]}"; do
+        sudo groupadd $grup
+        sudo mkdir -p /home/$grup_principal/$grup
+        sudo chmod 770 /home/$grup_principal/$grup
+        sudo chgrp $grup /home/$grup_principal/$grup
+    done
+
+    # Crear usuaris i afegir-los als grups
+    for usuari in "${!usuaris_grups[@]}"; do
+        sudo adduser --home /home/$usuari --ingroup $grup_principal --disabled-password --gecos "" $usuari
+        for grup in ${usuaris_grups[$usuari]}; do
+            sudo usermod -aG $grup $usuari
+        done
+    done
+
+    echo "Estructura creada correctament a partir del fitxer de configuració."
+}
+
+# Menú principal
+while true; do
+    echo "AdminScript:"
+    echo "1. Crear usuari."
+    echo "2. Crear grup."
+    echo "3. Canviar grup principal de l'usuari."
+    echo "4. Afegir usuari al grup."
+    echo "5. Canviar permisos del fitxer o directori."
+    echo "6. Canviar usuari propietari del fitxer o directori."
+    echo "7. Canviar grup propietari del fitxer o directori."
+    echo "8. Crear estructura a partir d'un fitxer de configuració."
+    echo "9. Eixir."
+    read -p "Selecciona una opció [1-9]: " opcio
+
+    case $opcio in
+        1) crear_usuari ;;
+        2) crear_grup ;;
+        3) canviar_grup_principal ;;
+        4) afegir_usuari_grup ;;
+        5) canviar_permisos ;;
+        6) canviar_propietari ;;
+        7) canviar_grup_propietari ;;
+        8) crear_estructura ;;
+        9) exit ;;
+        *) echo "Opció no vàlida." ;;
     esac
 done
