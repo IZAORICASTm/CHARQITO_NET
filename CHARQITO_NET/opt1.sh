@@ -100,6 +100,7 @@ crear_estructura() {
 
 # Menú principal
 while true; do
+clear
     echo "AdminScript:"
     echo "1. Crear usuari."
     echo "2. Crear grup."
