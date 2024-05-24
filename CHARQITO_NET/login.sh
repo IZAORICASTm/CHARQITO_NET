@@ -2,32 +2,27 @@
 while true; do
     clear
 
-    # Definir las respuestas correctas
-    respuestas_correctas=("sombra" "silencio" "reloj")
+    # Definir las respuestas correctas y sus respectivos acertijos
+    declare -A riddles
+    riddles=(
+        ["sombra"]="Todas las cosas tienen este, algunas tienen una, pero ninguna tiene dos. ¿Qué es?"
+        ["silencio"]="Es más ligero que una pluma, pero incluso el más fuerte no puede sostenerlo por mucho tiempo. ¿Qué es?"
+        ["reloj"]="Lo haces correr todo el día, lo haces correr todo el año, pero nunca puedes tocarlo. ¿Qué es?"
+        ["agua"]="Mientras más seca, más agua tiene. ¿Qué es?"
+        ["viento"]="Vuela sin alas, llora sin ojos. ¿Qué es?"
+        ["nada"]="Siempre está llegando, pero nunca llega. ¿Qué es?"
+        ["nieve"]="Puedes encontrarlo en invierno y en las montañas, pero nunca se mantiene. ¿Qué es?"
+        ["eco"]="Responde sin ser preguntado. ¿Qué es?"
+        ["secreto"]="Lo guardas, pero cuando lo compartes, lo pierdes. ¿Qué es?"
+        ["oscuridad"]="Siempre está detrás de ti y nunca podrás escapar de ella. ¿Qué es?"
+    )
 
     # Seleccionar un acertijo aleatorio
-    acertijo_index=$((RANDOM % ${#respuestas_correctas[@]}))
-    respuesta_correcta=${respuestas_correctas[$acertijo_index]}
+    respuesta_correcta=${!riddles[$(shuf -n1 -e "${!riddles[@]}")]}
 
     # Solicitar al usuario que descifre el acertijo para acceder
-    case $respuesta_correcta in
-        sombra)
-            echo "Acertijo 1:"
-            echo "Todas las cosas tienen este, algunas tienen una, pero ninguna tiene dos. ¿Qué es?"
-            ;;
-        silencio)
-            echo "Acertijo 2:"
-            echo "Es más ligero que una pluma, pero incluso el más fuerte no puede sostenerlo por mucho tiempo. ¿Qué es?"
-            ;;
-        reloj)
-            echo "Acertijo 3:"
-            echo "Lo haces correr todo el día, lo haces correr todo el año, pero nunca puedes tocarlo. ¿Qué es?"
-            ;;
-        *)
-            echo "Acertijo:"
-            echo "Todas las cosas tienen este, algunas tienen una, pero ninguna tiene dos. ¿Qué es?"
-            ;;
-    esac
+    echo "Acertijo:"
+    echo "${riddles[$respuesta_correcta]}"
 
     # Leer la respuesta del usuario
     read -p "Tu respuesta: " respuesta_usuario
