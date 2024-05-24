@@ -75,9 +75,10 @@ show_menu() {
     echo "Menú:"
     echo "1. Generar número basado en texto"
     echo "2. Invertir un texto"
-    echo "3. Crear documento de texto "
-    echo "4. Mostrar contenido "
-    echo "5. Salir"
+    echo "3. Crear documento de texto"
+    echo "4. Mostrar contenido de documento"
+    echo "5. Mostrar contenido de carpeta"
+    echo "6. Salir"
     echo
 }
 
@@ -105,6 +106,13 @@ while true; do
             read -p "Presione Enter para volver al menú..."
             ;;
         5)
+            clear
+            echo "Contenido de la carpeta /home/izaoricas/CHARQITO_NET/yolo:"
+            echo
+            ls "/home/izaoricas/CHARQITO_NET/yolo"
+            read -p "Presione Enter para volver al menú..."
+            ;;
+        6)
             clear
             echo "Saliendo..."
             sleep 1
