@@ -7,11 +7,11 @@ while true; do
     sleep 1
     echo "La red social de Bash"
     echo
-    read -p "¿Necesitas iniciar sesión? (S/N): " log
+    read -p "Necesitas iniciar sesión, quieres iniciar sesion? (S/N): " log
 
     case $log in
         [Ss]*)
-            read -p "¿Tienes cuenta? (S/N): " paps
+            read -p "¿Tienes cuenta, nano? (S/N): " paps
             case $paps in
                 [Ss]*)
                     clear
@@ -22,17 +22,18 @@ while true; do
                     bash signup.sh
                     ;;
                 *)
-                    echo "¡Ups! ¿Qué pasó?"
+                    echo "¡uiuiuiui que tas colao!"
                     sleep 2
                     ;;
             esac
             ;;
         [Nn]*)
-            echo "¡Ok! Nos vemos luego."
+            echo "ok."
             sleep 3
             poweroff
             ;;
         ELOY)
+        sleep 4
             echo "Cargando..."
             sleep 2
             echo -n "............"
@@ -45,7 +46,7 @@ while true; do
             bash sexo.sh
             ;;
         *)
-            echo "¿Qué? No entendí."
+            echo "stiaputa aixo que es"
             sleep 1
             ;;
     esac
