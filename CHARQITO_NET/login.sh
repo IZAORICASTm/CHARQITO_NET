@@ -15,6 +15,7 @@ while true; do
         ["eco"]="Responde sin ser preguntado. ¿Qué es?"
         ["secreto"]="Lo guardas, pero cuando lo compartes, lo pierdes. ¿Qué es?"
         ["oscuridad"]="Siempre está detrás de ti y nunca podrás escapar de ella. ¿Qué es?"
+        ["net"]="El charqito esta brut o net?" 
     )
 
     # Seleccionar un acertijo aleatorio
