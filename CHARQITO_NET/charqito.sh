@@ -1,5 +1,6 @@
 #!bin/bash
-while true do
+while true
+do
 echo 
 echo
 echo el charqito net consiste en una red social
