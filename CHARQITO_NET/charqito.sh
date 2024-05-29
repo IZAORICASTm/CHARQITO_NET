@@ -1,6 +1,4 @@
 #!bin/bash
-while true
-do
 clear
 echo 
 echo
@@ -19,4 +17,3 @@ sleep 1
 echo enter para continuar
 read
 bash question.sh
-done
