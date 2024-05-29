@@ -37,7 +37,7 @@ case $preg in
     ;;
   4)
     sleep 0.5
-    echo "Pobre ivan, no le digais que es calvo, leches -un poquitin es, honestamente-"
+    echo "Pobre ivan, no le digais que es calvo, leches (un poquitin es, honestamente)"
     read
     clear
     ;;
