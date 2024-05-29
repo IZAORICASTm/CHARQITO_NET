@@ -1,5 +1,6 @@
 #!/bin/bash
-while true do
+while true
+do
 echo -n alguna pregunta?
 read preg
 sleep 0.5
