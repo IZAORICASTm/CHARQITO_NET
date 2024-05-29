@@ -2,7 +2,6 @@
 while true
 do
 echo -n alguna pregunta?
-read preg
 sleep 0.5
 echo 1. porque lo has hecho solo?
 sleep 0.5
@@ -13,6 +12,7 @@ sleep 0.5
 echo 4. ivan es un calvo?
 sleep 0.5 
 echo 5. pues no, vamo al escript
+read preg
 
 case $preg in
   1)
