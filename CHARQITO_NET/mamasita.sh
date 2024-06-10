@@ -30,7 +30,7 @@ while true; do
         [Nn]*)
             echo "ok."
             sleep 3
-            poweroff
+            exit
             ;;
         ELOY)
         sleep 4
